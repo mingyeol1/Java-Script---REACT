@@ -2,15 +2,22 @@ import React from "react";
 
 
 //User 컴포넌트
-function User({user}){ //User 대문자인 이유는 객체라서.
+function User({user, onRemove, onToggle}){ //User 대문자인 이유는 객체라서.
 return(
     <div>
-        <b>{user.username}</b> <span>({user.email})</span>
+        <b 
+        style={{
+            cursor: 'pointer',
+            color: user.active ? 'green' : 'black'
+        }}
+        onClick={() => onToggle(user.id)}
+        >{user.username}</b> <span>({user.email})</span>
+        <button onClick={() => onRemove(user.id)}> 삭제</button>
     </div>
     );
 }
 
-function UserList({users}){
+function UserList({users, onRemove, onToggle}){
    
     
     return(
@@ -19,8 +26,12 @@ function UserList({users}){
            {/* {users.map(user => (
             <User user={user} key={user.id} />
            ))} */}
-           {users.map((user, index) => (
-            <User user={user} key={index} />
+           {users.map((user) => (
+            <User 
+            user={user} 
+            key={user.id} 
+            onRemove={onRemove} 
+            onToggle={onToggle}/>
            ))}
         </div>
     );

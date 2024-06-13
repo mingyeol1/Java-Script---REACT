@@ -30,17 +30,20 @@ function App() {
     {
         id: 1,
         username: '홍길동',
-        email: 'hong@naver.com'
+        email: 'hong@naver.com',
+        active: true
     },
     {
         id: 2,
         username: '이순신',
-        email: 'lee@naver.com'
+        email: 'lee@naver.com',
+        active: false
     },
     {
         id: 3,
         username: '유관순',
-        email: 'you@naver.com'
+        email: 'you@naver.com',
+        active: false
     }
     ]);
 
@@ -84,6 +87,26 @@ function App() {
 
     nextId.current += 1;   // onCreate가 동작하면, useRef에 현재값에 +1 처리
   }
+
+
+  //사용자 삭제.
+  const onRemove = id => {
+    // user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듦.
+    // user.id가 파라미터로 전달된 id인 것만 제거한 새로운 배열 생성.
+    setUsers(users.filter(user => user.id !== id));
+  };
+
+  //
+  const onToggle = id => {
+    setUsers(
+      users.map(user => 
+        user.id === id ? {...user, active:!user.active} : user
+      )
+    );
+  };
+
+
+
   return (
     <Fragment>
       {/* <StateComponent/>
@@ -109,7 +132,7 @@ function App() {
         onCreate={onCreate}
       
       />
-      <UserList users={users}/> {/* 등록사용자 출력 */}
+      <UserList users={users} onRemove={onRemove} onToggle={onToggle}/> {/* 등록사용자 출력 */}
      
 
     
