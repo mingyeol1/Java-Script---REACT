@@ -21,4 +21,8 @@ function CreateUser({username, email, onChange, onCreate}) {
   );
 }
 
-export default CreateUser;
+// 3rd day : React.memo를 사용한 컴포넌트 리랜더링 방지.
+//          컴포넌트의 리렌더링 성능 최적화를 위한 React.memo 함수.
+//          컴포넌트에서 리렌더가 필요한 경우에만 리렌더링하도록 설정 됨.
+
+export default React.memo(CreateUser);

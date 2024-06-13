@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { Fragment,useRef, useState } from 'react';
+import React, { Fragment,useCallback,useMemo,useRef, useState } from 'react';
 // import Wrapper from './Wrapper';
 import PropTypes from 'prop-types'; //prop 타입 검증을 위한 모듈.
 // import StateComponent from './useState/StateTest';
@@ -13,6 +13,15 @@ import UserList from './array/UserList';
 // import ArrayKey from './array/ArrayKey';
 // import InputSample2 from './array/InputSample2';
 import CreateUser from './array/CreateUser';
+import HookEffect from './Hooks/HookEffect';
+import LoopEffect from './Hooks/LoopEffect';
+import HookRef from './Hooks/HookRef';
+
+ // active가 활성화된 사용자를 세는 함수.
+ function countActiveUsers(users){
+  console.log('활성 사용자 수를 세는 중...');
+  return users.filter(user => user.active).length;
+}
 
 function App() {
 
@@ -71,7 +80,9 @@ function App() {
   // - 외부 라이브러리를 사용하여 생성된 인스턴스
   // - scroll 위치
   const nextId = useRef(4);  
-  const onCreate = () => {
+
+  // useCallback()을 이용한 함수 재사용 처리.
+  const onCreate = useCallback(() => {
     // 나중에 구현 할 배열에 항목 추가 로직... 
     const user = {
       id: nextId.current, //현재 useRef로 설정된 값을 호출.
@@ -86,25 +97,47 @@ function App() {
     });
 
     nextId.current += 1;   // onCreate가 동작하면, useRef에 현재값에 +1 처리
-  }
+  }, [users, username, email]); //함수 안에서 사용하는 상태(state), props를 지정
 
 
   //사용자 삭제.
-  const onRemove = id => {
+  // useCallback()을 이용한 함수 재사용 처리.
+  const onRemove = useCallback(id => {
     // user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듦.
     // user.id가 파라미터로 전달된 id인 것만 제거한 새로운 배열 생성.
     setUsers(users.filter(user => user.id !== id));
-  };
+  },[users]);
 
-  //
-  const onToggle = id => {
+  // useCallback과 같은 기능을 useMemo()로 구현한 것. 굳이 안쓰고 useCallback 쓰면 됨.
+  const onToggle = useMemo(id => id=> {
     setUsers(
-      users.map(user => 
-        user.id === id ? {...user, active:!user.active} : user
+      users.map(user =>
+        user.id === id ? {...user, active: !user.active} : user
       )
     );
-  };
+  },[users]);
 
+
+
+  //
+  // useCallback()을 이용한 함수 재사용 처리.
+  // const onToggle = useCallback(id => {
+  //   setUsers(
+  //     users.map(user => 
+  //       user.id === id ? {...user, active:!user.active} : user
+  //     )
+  //   );
+  // },[users]);
+
+  
+ 
+// useMemo -- input으로 생기는 리렌더링에는 실행하지 않음.
+// const count = countActiveUsers(users); 인 경우에는 리렌더링 시에 지속적으로
+// 사용되면서 메모리를 낭비함.
+// useMemo를 사용하면 users에 변화가 있는 경우에만 동작을 함.
+  const count = useMemo(() => countActiveUsers(users),[users]);
+  //useMemo()의 첫번째 파라미터는 어떻게 연산할지 정의하는 함수.(콜백함수)
+  //useMemo()의 두번째 파라미터는 deps 배열(의존성 배열)을 정의함.
 
 
   return (
@@ -132,8 +165,17 @@ function App() {
         onCreate={onCreate}
       
       />
-      <UserList users={users} onRemove={onRemove} onToggle={onToggle}/> {/* 등록사용자 출력 */}
-     
+       <UserList users={users} onRemove={onRemove} onToggle={onToggle}/> {/*등록사용자 출력 */}
+      <div>활성 사용자 수 : {count}</div>
+     <hr />
+      {/* 3nd Day : useEffect */}
+      {/* <HookEffect /> */}
+      
+      <hr />
+      {/* 3nd Day : useRef */}
+     <HookRef />
+      
+
 
     
     
