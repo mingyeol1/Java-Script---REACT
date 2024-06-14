@@ -1,12 +1,5 @@
 .App {
-  width: 512px;
-  margin: 0 auto; /* 태그와 태그사이 여백 4개를 다 쓸 시 시계방향.으로 지정 위, 오, 아 ,왼 */
-  margin-top: 4rem;
-  border: 1px solid black;
-  padding: 1rem;
-  .button + .button {
-    margin-left: 1rem;
-  }
+  text-align: center;
 }
 
 .App-logo {
