@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useReducer, useRef } from 'react';
+import React,{ useCallback, useMemo, useReducer, useRef } from 'react';
 import './App.css';
 // import Counter from './Hooks/Counter';
 import CreateUser from './Hooks/CreateUser';
@@ -73,7 +73,10 @@ function reducer(state, action) {
       return state;
   }
 }
-
+// 24.06.17---------
+// 1. UserDispatch 라는 이름으로 Context를 내보내기
+export const UserDispatch = React.createContext(null);
+// 내보낸 것을 사용하고 싶은 경우.. import {UserDispatch} from './App';
 
 function App() {
 
@@ -112,27 +115,31 @@ function App() {
     nextId.current += 1;
   }, [username, email, reset]);
 
-  const onToggle = useCallback(id => {
-    dispatch({
-      type: 'TOGGLE_USER',
-      id
-    });
-  },[]);
+  // 24.06.17 ContextAPI 사용 위해서 주석처리.
+  // const onToggle = useCallback(id => {
+  //   dispatch({
+  //     type: 'TOGGLE_USER',
+  //     id
+  //   });
+  // },[]);
 
-  const onRemove = useCallback(id => {
-    dispatch({
-      type: 'REMOVE_USER',
-      id
-    });
-  },[]);
+  // const onRemove = useCallback(id => {
+  //   dispatch({
+  //     type: 'REMOVE_USER',
+  //     id
+  //   });
+  // },[]);
 
   const count = useMemo(() => countActiveUsers(users), [users])
 
   return (
-    <>
-    <section className={styled.app_wrap}>
+    <UserDispatch.Provider value={dispatch}>
+    {/*24.06.17 ContextAPI를 사용..
+    const [state, dispatch] = useReducer(reducer, initalSatete);에 dispatch를 의미함. */}
+    
+    {/* <section className={styled.app_wrap}>
       <p className='title'>CSS 모듈~</p>
-    </section>
+    </section> */}
     <br />
     <hr />
       {/* <Counter /> */}
@@ -142,9 +149,10 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} onToggle={onToggle} onRemove={onRemove}/>
+      {/* 24.06.17 -> UserList에 onRemove, onToggle 제거. */}
+      <UserList users={users} />
       <div>활성사용자 수 : {count}</div>
-    </>
+    </UserDispatch.Provider>
   );
 }
 
