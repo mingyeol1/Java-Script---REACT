@@ -1,5 +1,5 @@
 //useReduver를 사용하여 상태를 관리하는 TodoProvider 컴포넌트
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useRef } from "react";
 
 const initialTodos = [
     {
@@ -15,12 +15,12 @@ const initialTodos = [
       {
         id: 3,
         text: 'Context 만들어 사용',
-        done: false
+        done: true
       },
       {
         id: 4,
         text: '기능구현',
-        done: false
+        done: true
       },
       {
         id: 5,
@@ -32,7 +32,7 @@ const initialTodos = [
 function todoReducer(state, action){
     // todo생성, 제거, 토글(완료여부)을 위한
     switch(action.type){
-        case 'CREAT':
+        case 'CREATE':
             return state.concat(action.todo);
         case 'TOGGLE':
             return state.map(todo =>
@@ -68,14 +68,27 @@ export function TodoProvider({children}){
 
 
 /* useContext에 직접 사용하는 대신에 useContext를 사용하는 Hook 만들어 내보내기 */
-export function useTodoState(){
-    return useContext(TodoStateContext);
+// 커스텀 훅 에러 처리...
+export function useTodoState(){ //컨텍스트가 없으면 에러발생.
+    const context = useContext(TodoStateContext);
+    if(!context){
+        throw new Error('Cannot find TodoContextProvider');
+    }
+    return context;
 }
 
 export function useTodoDispatch() {
-    return useContext(TodoDispatchContext);
+    const context = useContext(TodoDispatchContext);
+    if(!context){
+        throw new Error('Cannot find TodoContextProvider');
+    }
+    return context;
 }
 
 export function useTodoNextId(){
-    return useContext(TodoNextIdContext)
+    const context = useContext(TodoNextIdContext);
+    if(!context){
+        throw new Error('Cannot find TodoContextProvider');
+    }
+    return context;
 }
