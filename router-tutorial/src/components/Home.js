@@ -37,6 +37,12 @@ return(
                 <Link to='/user/testuser2'>testuser2</Link>
                 <Link to='/user/testuser3'>testuser3</Link>
             </li>
+            <li>
+                <Link to='/mypage'>마이페이지로 이동.</Link>
+            </li>
+            <li>
+                <Link to='/mypage?login=true'>마이페이지 ㄱ</Link>
+            </li>
          </ul>
         <h2>홈 페이지</h2>
         <p>지금 보여지는 곳은 홈페이지 임. 사이트 대문임.</p>

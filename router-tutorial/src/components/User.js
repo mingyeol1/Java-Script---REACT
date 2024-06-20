@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Outlet, useLocation, useParams, useSearchParams } from "react-router-dom";
+import Header from "./Header";
 
 
 const profileData = {
@@ -45,7 +46,7 @@ const profileData = {
  
  return(
         <div>
-            <header />
+            <Header />
             <li><Link to="/">홈</Link></li>
             <h2>User 페이지</h2>
             <p>이 페이지는 사용자의 정보를 처리하여 보여주는 페이지임.</p>
@@ -67,7 +68,6 @@ const profileData = {
                  }
                  </h4>
             </div>
-            <Outlet />
         </div>
     );
 }
