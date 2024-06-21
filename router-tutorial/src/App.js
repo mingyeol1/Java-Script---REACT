@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './components/Home';
 import User from './components/User';
 import Info from './components/Info';
@@ -10,6 +10,9 @@ import Profiles from './components/Profiles';
 import MyPage from './components/MyPage';
 
 function App() {
+
+  const {pathname} = useLocation(); 
+
   return (
     <>
       <Routes>  
@@ -27,6 +30,12 @@ function App() {
           <Route path=':username' element={<User />} />
         </Route> */}
         <Route path='/profiles/*' element={<Profiles />} />
+        <Route path='/*' element={ /* Switch를 사용했으 땐 이 경로는 마지막에 작성한다. */
+          <div>
+            <h1>Http 404</h1>
+            <h2>{pathname} - 이 페이지는 존재하지 않음.</h2>
+          </div>
+        }/>
         
       </Routes>
     </>
