@@ -5,6 +5,8 @@ import Counter from './components/Counter';
 import MyForm from './components/MyForm';
 import CounterReducer from './components/CounterReducer';
 import ReducerSample from './components/ReducerSample';
+import { SampleProvider } from './SampleContext';
+import ReducerSample2 from './components/ReducerSample2';
 
 
 function App() {
@@ -16,7 +18,7 @@ function App() {
   }
   return (
     <div className="App">
-      <Greetings name="TIM" onClick={onClick}/> {/* 프롭스를 전달 안받으면 에러발생(빨간줄) */}
+      {/* <Greetings name="TIM" onClick={onClick}/>  프롭스를 전달 안받으면 에러발생(빨간줄) 
       <hr />
       <Counter />
       <hr />
@@ -24,7 +26,10 @@ function App() {
       <hr />
       <CounterReducer />
       <hr />
-      <ReducerSample />
+      <ReducerSample /> */}
+      <SampleProvider>
+        <ReducerSample2 />
+      </SampleProvider>
     </div>
   );
 }
